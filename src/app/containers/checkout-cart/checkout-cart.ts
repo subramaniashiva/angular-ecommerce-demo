@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 
 import { CartProvider } from '../../providers/cart.provider';
+import { VoucherCodeResponse } from '../../models/voucher-code-response';
 import { AppConst } from '../../utils/app-const';
 
 @Component({
@@ -12,11 +14,13 @@ export class CheckoutCartComponent implements OnInit {
 
   public cartItems: Array<any> = [];
   public totalPrice: number = 0;
+  public priceAfterDiscount: number = 0;
   public itemsListPath: string = '/items';
   public loading: boolean = false;
   public isError: boolean = false;
   public optionSelected: any = {};
   public currencySymbol: string = AppConst.DEFAULT_CURRENCY_SYMBOL;
+  public verifyingVoucher: boolean = false;
 
   private updateCartItemsFromProvider() {
     const cartObj = this.cartProvider.getCartItems();
@@ -28,9 +32,11 @@ export class CheckoutCartComponent implements OnInit {
 
   private updateTotalPriceFromProvider() {
     this.totalPrice = this.cartProvider.getTotalPrice();
+    this.priceAfterDiscount = this.cartProvider.getPriceAfterDiscount();
   }
 
-  constructor(private cartProvider: CartProvider) {}
+  constructor(private cartProvider: CartProvider,
+    private snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.updateCartItemsFromProvider();
@@ -94,6 +100,21 @@ export class CheckoutCartComponent implements OnInit {
   }
 
   handleVoucherAdded(voucher: string) {
+    this.verifyingVoucher = true;
+
+    this.cartProvider.verifyVoucherCode(voucher).subscribe((res: VoucherCodeResponse) => {
+      this.updateTotalPriceFromProvider();
+      this.snackBar.open(res.description, 'Dismiss', {
+        duration: 2000,
+      });
+      this.verifyingVoucher = false;
+    },
+    (err) => {
+      this.verifyingVoucher = false;
+      this.snackBar.open('Error while applying voucher. Please try later.', 'Dismiss', {
+        duration: 2000,
+      });
+    });
     console.log('voucher is ', voucher);
   }
 }
