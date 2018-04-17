@@ -6,15 +6,20 @@ import 'rxjs/add/observable/of';
 import { ApiProvider } from './api.provider';
 import { ItemDescription } from '../models/item-description';
 import { BuyParams } from '../models/buy-params';
+import { VoucherCodeResponse } from '../models/voucher-code-response';
+import FootWearCateogryIds from '../mock/footwear-category-ids';
 import { AppConst } from '../utils/app-const';
 import { environment } from '../../environments/environment';
 
 @Injectable()
 export class CartProvider {
   private cartItems: any = {};
+  private priceAfterDiscount = 0;
   private totalPrice = 0;
   private totalItems = 0;
   private storeApiPath: string = environment.storeApiPath;
+  private voucherApplied: boolean = false;
+  private currentVoucher: string = '';
 
   private getCartItemsReference(): Array<number> {
     const refs = [];
@@ -33,6 +38,78 @@ export class CartProvider {
     return this.apiProvider.httpPost(url, buyParam);
   }
 
+  private verifyVoucherCodeFromServer(voucher: string): Observable<any> {
+    const url: string = this.storeApiPath + AppConst.STORE_API_PATHS.verfiyVoucher;
+    // Ideally we should use post method
+    // Body should contain the cart and the voucher code
+    return this.apiProvider.httpGet(url);
+  }
+
+  private getFootWearCategoryIds(): string[] {
+    return FootWearCateogryIds;
+  }
+
+  private isFootwearPresent(): boolean {
+    if (this.totalItems) {
+      for (let i in this.cartItems) {
+        if (this.cartItems[i] && this.getFootWearCategoryIds().indexOf(this.cartItems[i].categoryId) !== -1) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private updateDiscountedPrice(): VoucherCodeResponse {
+    const voucherCodeResponse = new VoucherCodeResponse;
+
+    voucherCodeResponse.success = false;
+    this.priceAfterDiscount = this.totalPrice;
+
+    if (this.totalItems && this.totalPrice > 5 && this.voucherApplied && this.currentVoucher) {
+      switch (this.currentVoucher.toUpperCase()) {
+        case AppConst.VOUCHER_CODES.OFF5:
+          this.priceAfterDiscount = this.totalPrice - 5;
+          voucherCodeResponse.description = 'Voucher succesfully applied.'
+          break;
+        case AppConst.VOUCHER_CODES.OFF10:
+          if (this.totalPrice > 50) {
+            this.priceAfterDiscount = this.totalPrice - 10;
+            voucherCodeResponse.description = 'Voucher succesfully applied.'
+          } else {
+            this.voucherApplied = false;
+            this.currentVoucher = '';
+            voucherCodeResponse.success = false;
+            voucherCodeResponse.description = 'This voucher can be applied only when the cart value is above 50';
+          }
+          break;
+        case AppConst.VOUCHER_CODES.OFF15:
+          if (this.totalPrice > 75 && this.isFootwearPresent()) {
+            this.priceAfterDiscount = this.totalPrice - 15;
+            voucherCodeResponse.description = 'Voucher succesfully applied';
+          } else {
+            this.voucherApplied = false;
+            this.currentVoucher = '';
+            voucherCodeResponse.success = false;
+            voucherCodeResponse.description = 'This voucher can be applied only when the cart value is boave 75 and atleast one footwear is present';
+          }
+          break;
+        default:
+          this.voucherApplied = false;
+          this.currentVoucher = '';
+          voucherCodeResponse.success = false;
+          voucherCodeResponse.description = 'Invalid voucher code. Please check.';
+          break;
+      }
+    }
+    else {
+      this.currentVoucher = '';
+      this.voucherApplied = false;
+      voucherCodeResponse.description = 'Voucher cannot be applied to the current cart';
+    }
+    return voucherCodeResponse;
+  }
+
   constructor(private apiProvider: ApiProvider) {
 
   }
@@ -43,6 +120,7 @@ export class CartProvider {
         this.cartItems[productId].items_available = this.cartItems[productId].items_available - 1;
         this.cartItems[productId].count = this.cartItems[productId].count + 1;
         this.totalPrice = this.totalPrice + item.cost;
+        this.updateDiscountedPrice();
         this.totalItems += 1;
       }
     } else {
@@ -52,6 +130,7 @@ export class CartProvider {
         this.cartItems[productId].items_available = this.cartItems[productId].items_available - 1;
         this.cartItems[productId].count = 1;
         this.totalPrice = this.totalPrice + item.cost;
+        this.updateDiscountedPrice();
         this.totalItems += 1;
       }
     }
@@ -63,6 +142,10 @@ export class CartProvider {
 
   public getTotalPrice(): number {
     return Number(this.totalPrice.toFixed(2));
+  }
+
+  public getPriceAfterDiscount(): number {
+    return Number(this.priceAfterDiscount.toFixed(2));
   }
 
   public isItemAvailable(ref: string) {
@@ -109,6 +192,7 @@ export class CartProvider {
     if (this.cartItems[ref]) {
       const tempObj = this.cartItems[ref];
       this.totalPrice = this.totalPrice - (tempObj.count * tempObj.cost);
+      this.updateDiscountedPrice();
       this.totalItems = this.totalItems - (tempObj.count);
       this.cartItems[ref] = null;
       delete this.cartItems[ref];
@@ -125,6 +209,7 @@ export class CartProvider {
         this.cartItems[ref].items_available = max_available - totalQuantity;
         this.totalPrice = this.totalPrice - currentPriceForThisItem;
         this.totalPrice = this.totalPrice + (this.cartItems[ref].count * this.cartItems[ref].cost);
+        this.updateDiscountedPrice();
         this.totalItems = this.totalItems - curretnCountForThisItem;
         this.totalItems = this.totalItems + this.cartItems[ref].count;
       }
@@ -134,6 +219,34 @@ export class CartProvider {
   public removeAllItemsFromCart() {
     this.cartItems = {};
     this.totalPrice = 0;
+    this.priceAfterDiscount = 0;
     this.totalItems = 0;
+    this.voucherApplied = false;
+    this.currentVoucher = '';
   }
+
+  public verifyVoucherCode(voucher: string): Observable<VoucherCodeResponse> {
+    let voucherCodeResponse = new VoucherCodeResponse();
+    voucherCodeResponse.success = false;
+
+    const observable: Observable<VoucherCodeResponse> = new Observable((observer) => {
+      if (this.totalItems && voucher && !this.voucherApplied && this.totalPrice > 5) {
+        this.verifyVoucherCodeFromServer(voucher).subscribe((res) => {
+          this.currentVoucher = voucher;
+          this.voucherApplied = true;
+          voucherCodeResponse.success = true;
+          voucherCodeResponse = this.updateDiscountedPrice()
+          observer.next(voucherCodeResponse);
+          observer.complete;
+        });
+      } else {
+        voucherCodeResponse.description = 'Voucher cannot be applied to the current cart';
+        observer.next(voucherCodeResponse);
+        observer.complete();
+      }
+    });
+
+    return observable;
+  }
+
 }
