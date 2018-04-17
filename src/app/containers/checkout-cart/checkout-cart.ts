@@ -30,7 +30,7 @@ export class CheckoutCartComponent implements OnInit {
     });
   }
 
-  private updateTotalPriceFromProvider() {
+  private updatePriceFromProvider() {
     this.totalPrice = this.cartProvider.getTotalPrice();
     this.priceAfterDiscount = this.cartProvider.getPriceAfterDiscount();
   }
@@ -40,7 +40,7 @@ export class CheckoutCartComponent implements OnInit {
 
   ngOnInit() {
     this.updateCartItemsFromProvider();
-    this.updateTotalPriceFromProvider();
+    this.updatePriceFromProvider();
   }
 
 
@@ -50,6 +50,8 @@ export class CheckoutCartComponent implements OnInit {
       .subscribe((res) => {
         this.loading = false;
         console.log('res is ', res);
+        this.updateCartItemsFromProvider();
+        this.updatePriceFromProvider();
       }, () => {
         this.loading = false;
         this.isError = true;
@@ -59,7 +61,7 @@ export class CheckoutCartComponent implements OnInit {
   handleRemoveItem(ref: string) {
     this.cartProvider.removeItem(ref);
     this.updateCartItemsFromProvider();
-    this.updateTotalPriceFromProvider();
+    this.updatePriceFromProvider();
   }
 
   getQuantity(ref: string): number {
@@ -73,7 +75,7 @@ export class CheckoutCartComponent implements OnInit {
   handleQuantityChange($event, ref: string) {
     console.log($event, ref);
     this.cartProvider.updateQuantityOfItem(ref, Number($event.target.value));
-    this.updateTotalPriceFromProvider();
+    this.updatePriceFromProvider();
 
   }
 
@@ -96,14 +98,14 @@ export class CheckoutCartComponent implements OnInit {
     // Since we manage the cart items in provider in a different structure (to optimise the space)
     // we have to check and update the items and price for the cart
     this.updateCartItemsFromProvider();
-    this.updateTotalPriceFromProvider();
+    this.updatePriceFromProvider();
   }
 
   handleVoucherAdded(voucher: string) {
     this.verifyingVoucher = true;
 
     this.cartProvider.verifyVoucherCode(voucher).subscribe((res: VoucherCodeResponse) => {
-      this.updateTotalPriceFromProvider();
+      this.updatePriceFromProvider();
       this.snackBar.open(res.description, 'Dismiss', {
         duration: 2000,
       });
