@@ -45,11 +45,19 @@
     <ng-container *ngIf="cartItems.length">
       <app-voucher-code [verifyingVoucher]="verifyingVoucher" (onVoucherAdded)="handleVoucherAdded($event)"></app-voucher-code>
 
-      <mat-card>
+      <mat-card class="totalPrice__card">
         <mat-card-content>
           <div class="row">
             <div class="col-md-10">
               <p><strong>Total Price: </strong></p>
+            </div>
+            <div class="col-md-2">
+              <p [ngClass]="{'strike': totalPrice !== priceAfterDiscount}" >{{currencySymbol}}{{totalPrice}}</p>
+            </div>
+          </div>
+          <div class="row" *ngIf="totalPrice !== priceAfterDiscount">
+            <div class="col-md-10">
+              <p><strong>Discounted Price: </strong></p>
             </div>
             <div class="col-md-2">
               <p>{{currencySymbol}}{{priceAfterDiscount}}</p>
@@ -66,10 +74,8 @@
     <ng-container *ngIf="!cartItems || !cartItems.length">
       <mat-card>
         <mat-card-content>
-          <div class="row">
             <p>Oh Ho! Your cart is empty!</p>
             <p><a [routerLink]="itemsListPath">Click here</a> to browse through our collection.</p>
-          </div>
         </mat-card-content>
       </mat-card>
     </ng-container>
