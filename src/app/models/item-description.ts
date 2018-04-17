@@ -7,7 +7,7 @@ export class ItemDescription {
   label: string;
   category: string;
   productId: string;
-  categoryId: string
+  categoryId: string;
   constructor(inputObj) {
     if (inputObj) {
       this.brand = inputObj.brand;

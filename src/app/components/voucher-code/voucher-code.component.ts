@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-voucher-code',
@@ -7,13 +7,15 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class VoucherCodeComponent implements OnInit {
 
+  @Input()
+  verifyingVoucher = false;
+
   @Output()
   onVoucherAdded: EventEmitter<string> = new EventEmitter<string>();
 
-  public showBtnLoading: boolean = false;
-  public voucherCode: string = '';
+  public voucherCode = '';
 
-  private cleanVoucherCode(code: string):string {
+  private cleanVoucherCode(code: string): string {
     return code.trim();
   }
   constructor() { }
@@ -25,6 +27,7 @@ export class VoucherCodeComponent implements OnInit {
     const voucherCode = this.cleanVoucherCode(this.voucherCode);
     if (voucherCode) {
       this.onVoucherAdded.emit(voucherCode);
+      this.voucherCode = '';
     }
   }
 

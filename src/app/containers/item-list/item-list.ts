@@ -13,8 +13,8 @@ import { map } from 'rxjs/operators';
 export class ItemListComponent implements OnInit {
 
   public itemsList: Array<ItemsListItem>;
-  public isLoading: boolean = false;
-  public isError: boolean = false;
+  public isLoading = false;
+  public isError = false;
 
   constructor(private itemsProvider: ItemsProvider,
     private router: Router) {}

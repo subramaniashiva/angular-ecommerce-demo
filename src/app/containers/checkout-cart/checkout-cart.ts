@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 
 import { CartProvider } from '../../providers/cart.provider';
+import { VoucherCodeResponse } from '../../models/voucher-code-response';
 import { AppConst } from '../../utils/app-const';
 
 @Component({
@@ -11,12 +13,14 @@ import { AppConst } from '../../utils/app-const';
 export class CheckoutCartComponent implements OnInit {
 
   public cartItems: Array<any> = [];
-  public totalPrice: number = 0;
-  public itemsListPath: string = '/items';
-  public loading: boolean = false;
-  public isError: boolean = false;
+  public totalPrice = 0;
+  public priceAfterDiscount = 0;
+  public itemsListPath = '/items';
+  public loading = false;
+  public isError = false;
   public optionSelected: any = {};
-  public currencySymbol: string = AppConst.DEFAULT_CURRENCY_SYMBOL;
+  public currencySymbol = AppConst.DEFAULT_CURRENCY_SYMBOL;
+  public verifyingVoucher = false;
 
   private updateCartItemsFromProvider() {
     const cartObj = this.cartProvider.getCartItems();
@@ -26,15 +30,17 @@ export class CheckoutCartComponent implements OnInit {
     });
   }
 
-  private updateTotalPriceFromProvider() {
+  private updatePriceFromProvider() {
     this.totalPrice = this.cartProvider.getTotalPrice();
+    this.priceAfterDiscount = this.cartProvider.getPriceAfterDiscount();
   }
 
-  constructor(private cartProvider: CartProvider) {}
+  constructor(private cartProvider: CartProvider,
+    private snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.updateCartItemsFromProvider();
-    this.updateTotalPriceFromProvider();
+    this.updatePriceFromProvider();
   }
 
 
@@ -44,6 +50,8 @@ export class CheckoutCartComponent implements OnInit {
       .subscribe((res) => {
         this.loading = false;
         console.log('res is ', res);
+        this.updateCartItemsFromProvider();
+        this.updatePriceFromProvider();
       }, () => {
         this.loading = false;
         this.isError = true;
@@ -53,7 +61,7 @@ export class CheckoutCartComponent implements OnInit {
   handleRemoveItem(ref: string) {
     this.cartProvider.removeItem(ref);
     this.updateCartItemsFromProvider();
-    this.updateTotalPriceFromProvider();
+    this.updatePriceFromProvider();
   }
 
   getQuantity(ref: string): number {
@@ -67,7 +75,7 @@ export class CheckoutCartComponent implements OnInit {
   handleQuantityChange($event, ref: string) {
     console.log($event, ref);
     this.cartProvider.updateQuantityOfItem(ref, Number($event.target.value));
-    this.updateTotalPriceFromProvider();
+    this.updatePriceFromProvider();
 
   }
 
@@ -90,10 +98,25 @@ export class CheckoutCartComponent implements OnInit {
     // Since we manage the cart items in provider in a different structure (to optimise the space)
     // we have to check and update the items and price for the cart
     this.updateCartItemsFromProvider();
-    this.updateTotalPriceFromProvider();
+    this.updatePriceFromProvider();
   }
 
   handleVoucherAdded(voucher: string) {
+    this.verifyingVoucher = true;
+
+    this.cartProvider.verifyVoucherCode(voucher).subscribe((res: VoucherCodeResponse) => {
+      this.updatePriceFromProvider();
+      this.snackBar.open(res.description, 'Dismiss', {
+        duration: 2000,
+      });
+      this.verifyingVoucher = false;
+    },
+    (err) => {
+      this.verifyingVoucher = false;
+      this.snackBar.open('Error while applying voucher. Please try later.', 'Dismiss', {
+        duration: 2000,
+      });
+    });
     console.log('voucher is ', voucher);
   }
 }

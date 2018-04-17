@@ -17,4 +17,9 @@
     text-align: right;
     margin-bottom: 10px;
   }
+  .totalPrice__card {
+    .strike {
+      text-decoration: line-through;
+    }
+  }
 }

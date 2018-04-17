@@ -15,9 +15,9 @@ import { map } from 'rxjs/operators';
 })
 export class ItemDescComponent implements OnInit {
 
-  public currencySymbol: string = AppConst.DEFAULT_CURRENCY_SYMBOL;
-  public loading: boolean = false;
-  public isError: boolean = false;
+  public currencySymbol = AppConst.DEFAULT_CURRENCY_SYMBOL;
+  public loading = false;
+  public isError = false;
   public item: ItemDescription;
 
   constructor(private itemsProvider: ItemsProvider,
