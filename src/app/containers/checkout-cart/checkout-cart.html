@@ -43,6 +43,8 @@
     </ng-container>
 
     <ng-container *ngIf="cartItems.length">
+      <app-voucher-code [verifyingVoucher]="verifyingVoucher" (onVoucherAdded)="handleVoucherAdded($event)"></app-voucher-code>
+
       <mat-card>
         <mat-card-content>
           <div class="row">
@@ -50,18 +52,15 @@
               <p><strong>Total Price: </strong></p>
             </div>
             <div class="col-md-2">
-              <p>{{currencySymbol}}{{totalPrice}}</p>
+              <p>{{currencySymbol}}{{priceAfterDiscount}}</p>
             </div>
           </div>
         </mat-card-content>
       </mat-card>
+
       <div class="checkout__btn-container">
         <button mat-raised-button color="primary" (click)="handleBuyNow()">Buy Now</button>
       </div>
-    </ng-container>
-
-    <ng-container>
-      <app-voucher-code (onVoucherAdded)="handleVoucherAdded($event)"></app-voucher-code>
     </ng-container>
 
     <ng-container *ngIf="!cartItems || !cartItems.length">
