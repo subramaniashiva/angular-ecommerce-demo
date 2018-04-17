@@ -19,8 +19,8 @@ export class ItemsListItemComponent {
   @Output()
   onAddToCartClick: EventEmitter<ItemsListItem> = new EventEmitter<ItemsListItem>();
 
-  public addToCartText: string = 'Add To Cart';
-  public currencySymbol: string = AppConst.DEFAULT_CURRENCY_SYMBOL;
+  public addToCartText = 'Add To Cart';
+  public currencySymbol = AppConst.DEFAULT_CURRENCY_SYMBOL;
 
   constructor() { }
 

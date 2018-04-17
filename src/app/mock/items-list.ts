@@ -6,7 +6,7 @@ export default [{
   category: 'Women\'s Footwear',
   categoryId: '1',
   productId: '1'
-},{
+}, {
   cost: 42,
   image: 'assets/images/shoes.png',
   label: 'Suede Shoes',
@@ -14,7 +14,7 @@ export default [{
   category: 'Women’s Footwear',
   categoryId: '1',
   productId: '2'
-},{
+}, {
   cost: 34,
   image: 'assets/images/shoes.png',
   label: 'Leather Driver Saddle Loafers',
@@ -22,7 +22,7 @@ export default [{
   category: 'Men\'s Footwear',
   categoryId: '2',
   productId: '3'
-},{
+}, {
   cost: 19,
   image: 'assets/images/shoes.png',
   label: 'Flip Flops',
@@ -30,7 +30,7 @@ export default [{
   category: 'Men\'s Footwear',
   categoryId: '2',
   productId: '4'
-},{
+}, {
   cost: 19,
   image: 'assets/images/shoes.png',
   label: 'Flip Flops',
@@ -38,7 +38,7 @@ export default [{
   category: 'Men\'s Footwear',
   categoryId: '2',
   productId: '5'
-},{
+}, {
   cost: 167,
   image: 'assets/images/shoes.png',
   label: 'Gold Button Cardigan',
@@ -46,7 +46,7 @@ export default [{
   category: 'Women\'s Casualwear',
   categoryId: '3',
   productId: '6'
-},{
+}, {
   cost: 30,
   image: 'assets/images/shoes.png',
   label: 'Cotton Shorts',
@@ -54,7 +54,7 @@ export default [{
   category: 'Women\'s Casualwear',
   categoryId: '3',
   productId: '7'
-},{
+}, {
   cost: 49.99,
   image: 'assets/images/shoes.png',
   label: 'Fine Stripe Short Sleeve Shirt',
@@ -62,7 +62,7 @@ export default [{
   category: 'Men\'s Casualwear',
   categoryId: '4',
   productId: '8'
-},{
+}, {
   cost: 39.99,
   image: 'assets/images/shoes.png',
   label: 'Fine Stripe Short Sleeve Shirt',
@@ -70,7 +70,7 @@ export default [{
   category: 'Men\'s Casualwear',
   categoryId: '4',
   productId: '9'
-},{
+}, {
   cost: 75,
   image: 'assets/images/shoes.png',
   label: 'Sharkskin Waistcoat',
@@ -78,7 +78,7 @@ export default [{
   category: 'Men\'s Formalwear',
   categoryId: '5',
   productId: '10'
-},{
+}, {
   cost: 175.50,
   image: 'assets/images/shoes.png',
   label: 'Lightweight Patch Pocket Blazer',
@@ -86,7 +86,7 @@ export default [{
   category: 'Men\'s Formalwear',
   categoryId: '5',
   productId: '11'
-},{
+}, {
   cost: 270,
   image: 'assets/images/shoes.png',
   label: 'Bird Print Dress',
@@ -94,7 +94,7 @@ export default [{
   category: 'Women\'s Formalwear',
   categoryId: '6',
   productId: '12'
-},{
+}, {
   cost: 540,
   image: 'assets/images/shoes.png',
   label: 'Mid Twist Cut-Out Dress',

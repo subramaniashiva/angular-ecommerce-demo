@@ -17,9 +17,9 @@ export class CartProvider {
   private priceAfterDiscount = 0;
   private totalPrice = 0;
   private totalItems = 0;
-  private storeApiPath: string = environment.storeApiPath;
-  private voucherApplied: boolean = false;
-  private currentVoucher: string = '';
+  private storeApiPath = environment.storeApiPath;
+  private voucherApplied = false;
+  private currentVoucher = '';
 
   private getCartItemsReference(): Array<number> {
     const refs = [];
@@ -51,7 +51,7 @@ export class CartProvider {
 
   private isFootwearPresent(): boolean {
     if (this.totalItems) {
-      for (let i in this.cartItems) {
+      for (const i in this.cartItems) {
         if (this.cartItems[i] && this.getFootWearCategoryIds().indexOf(this.cartItems[i].categoryId) !== -1) {
           return true;
         }
@@ -70,12 +70,12 @@ export class CartProvider {
       switch (this.currentVoucher.toUpperCase()) {
         case AppConst.VOUCHER_CODES.OFF5:
           this.priceAfterDiscount = this.totalPrice - 5;
-          voucherCodeResponse.description = 'Voucher succesfully applied.'
+          voucherCodeResponse.description = 'Voucher succesfully applied.';
           break;
         case AppConst.VOUCHER_CODES.OFF10:
           if (this.totalPrice > 50) {
             this.priceAfterDiscount = this.totalPrice - 10;
-            voucherCodeResponse.description = 'Voucher succesfully applied.'
+            voucherCodeResponse.description = 'Voucher succesfully applied.';
           } else {
             this.voucherApplied = false;
             this.currentVoucher = '';
@@ -91,7 +91,8 @@ export class CartProvider {
             this.voucherApplied = false;
             this.currentVoucher = '';
             voucherCodeResponse.success = false;
-            voucherCodeResponse.description = 'This voucher can be applied only when the cart value is boave 75 and atleast one footwear is present';
+            voucherCodeResponse.description =
+              'This voucher can be applied only when the cart value is boave 75 and atleast one footwear is present';
           }
           break;
         default:
@@ -101,8 +102,7 @@ export class CartProvider {
           voucherCodeResponse.description = 'Invalid voucher code. Please check.';
           break;
       }
-    }
-    else {
+    } else {
       this.currentVoucher = '';
       this.voucherApplied = false;
       voucherCodeResponse.description = 'Voucher cannot be applied to the current cart';
@@ -235,9 +235,9 @@ export class CartProvider {
           this.currentVoucher = voucher;
           this.voucherApplied = true;
           voucherCodeResponse.success = true;
-          voucherCodeResponse = this.updateDiscountedPrice()
+          voucherCodeResponse = this.updateDiscountedPrice();
           observer.next(voucherCodeResponse);
-          observer.complete;
+          observer.complete();
         });
       } else {
         voucherCodeResponse.description = 'Voucher cannot be applied to the current cart';

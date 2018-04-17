@@ -13,14 +13,14 @@ import { AppConst } from '../../utils/app-const';
 export class CheckoutCartComponent implements OnInit {
 
   public cartItems: Array<any> = [];
-  public totalPrice: number = 0;
-  public priceAfterDiscount: number = 0;
-  public itemsListPath: string = '/items';
-  public loading: boolean = false;
-  public isError: boolean = false;
+  public totalPrice = 0;
+  public priceAfterDiscount = 0;
+  public itemsListPath = '/items';
+  public loading = false;
+  public isError = false;
   public optionSelected: any = {};
-  public currencySymbol: string = AppConst.DEFAULT_CURRENCY_SYMBOL;
-  public verifyingVoucher: boolean = false;
+  public currencySymbol = AppConst.DEFAULT_CURRENCY_SYMBOL;
+  public verifyingVoucher = false;
 
   private updateCartItemsFromProvider() {
     const cartObj = this.cartProvider.getCartItems();
