@@ -8,14 +8,14 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class VoucherCodeComponent implements OnInit {
 
   @Input()
-  verifyingVoucher: boolean = false;
+  verifyingVoucher = false;
 
   @Output()
   onVoucherAdded: EventEmitter<string> = new EventEmitter<string>();
 
-  public voucherCode: string = '';
+  public voucherCode = '';
 
-  private cleanVoucherCode(code: string):string {
+  private cleanVoucherCode(code: string): string {
     return code.trim();
   }
   constructor() { }
