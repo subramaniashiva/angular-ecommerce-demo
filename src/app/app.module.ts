@@ -15,7 +15,7 @@ import { CheckoutCartComponent } from './containers/checkout-cart/checkout-cart'
 
 // Dumb Components
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/header/header';
+import { HeaderComponent } from './components/header/header.component';
 import { ItemsListItemComponent } from './components/items-list-item/items-list-item.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { NetworkErrorComponentComponent } from './components/network-error-component/network-error-component.component';

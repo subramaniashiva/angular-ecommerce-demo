@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 
+import { MaterialModule } from '../../modules/material.module';
 import { VoucherCodeComponent } from './voucher-code.component';
 
 describe('VoucherCodeComponent', () => {
@@ -8,6 +10,7 @@ describe('VoucherCodeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [ FormsModule, MaterialModule ],
       declarations: [ VoucherCodeComponent ]
     })
     .compileComponents();
