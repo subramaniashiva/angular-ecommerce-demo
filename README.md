@@ -1,6 +1,6 @@
 Demo Angular Store
 ===================
-This is a demo e-commerce store built using Angular 5 and TypeScript. The application lists the items that can be bought from the store. Every item has its own page with more details. Any item can be added or removed from the shopping cart. The user can visit the shopping cart at any time. The user can also apply voucher codes to the shopping cart. Based on the voucher code, price will be discounted.
+This is a demo e-commerce store built using Angular 5 and TypeScript. The application can be directly viewed [here](https://subramaniashiva.github.io/angular-ecommerce-demo/dist/items). The application lists the items that can be bought from the store. Every item has its own page with more details. Any item can be added or removed from the shopping cart. The user can visit the shopping cart at any time. The user can also apply voucher codes to the shopping cart. Based on the voucher code, price will be discounted.
 
 Following voucher codes are valid in the application:
 
