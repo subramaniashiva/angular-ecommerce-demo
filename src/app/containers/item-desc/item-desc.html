@@ -17,7 +17,8 @@
           </div>
           <div class="col-md-7">
             <p><strong>Label</strong>: {{item.label}}</p>
-            <p><strong>Price</strong>: {{currencySymbol}}{{item.cost}}</p>
+            <p><strong>Category</strong>: {{item.category}}</p>
+            <p><strong>Price per item</strong>: {{currencySymbol}}{{item.cost}}</p>
             <p><strong>Items Available</strong>: {{getItemsAvailable()}}</p>
             <p [innerHtml]="item.description"></p>
             <button (click)="handleAddToCardClick()" [disabled]="!getItemsAvailable()" mat-raised-button color="primary" class="item-description__add-card">Add To Cart</button>
