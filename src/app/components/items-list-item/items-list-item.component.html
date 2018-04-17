@@ -2,19 +2,25 @@
   <mat-card (click)="handleCardClick($event)">
     <mat-card-content>
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-12">
           <img class="items-list-item__img" [src]="item.image" [alt]="item.label" />
         </div>
-        <div class="col-md-9">
-          <p>
-            {{item.label}}
-          </p>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h4 *ngIf="item.label">
+            <strong>{{item.label}}</strong>
+          </h4>
           <p *ngIf="item.color">
-            Color: {{item.color}}
+            <strong>Color:</strong> {{item.color}}
           </p>
-          <p>
-            Price: {{currencySymbol}}{{item.cost}}
+          <p *ngIf="item.category">
+            <strong>Category:</strong> {{item.category}}
           </p>
+          <p *ngIf="item.cost">
+            <strong>Price:</strong> {{currencySymbol}}{{item.cost}}
+          </p>
+          <button mat-raised-button color="primary">More Info</button>
         </div>
       </div>
     </mat-card-content>
