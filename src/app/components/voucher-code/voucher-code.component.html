@@ -6,10 +6,10 @@
           <span><strong>Voucher Code:</strong></span>
         </div>
         <div class="col-md-10 controls-container">
-          <input type="text" [(ngModel)]="voucherCode" />
-          <button class="controls-container__btn" mat-raised-button color="primary" [disabled]="showBtnLoading" (click)="handleVoucher()">
-            <span *ngIf="!showBtnLoading">Add Voucher</span>
-            <mat-spinner diameter="25" *ngIf="showBtnLoading"></mat-spinner>
+          <input class="controls-container__text" type="text" [(ngModel)]="voucherCode" />
+          <button class="controls-container__btn" mat-raised-button color="primary" [disabled]="verifyingVoucher" (click)="handleVoucher()">
+            <span *ngIf="!verifyingVoucher">Add Voucher</span>
+            <mat-spinner diameter="25" *ngIf="verifyingVoucher"></mat-spinner>
           </button>
         </div>
       </div>
