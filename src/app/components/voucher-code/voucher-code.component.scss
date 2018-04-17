@@ -1,0 +1,18 @@
+.voucher-code {
+  .controls-text-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    .controls-container, .text-container, .controls-container__btn {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+    }
+    .controls-container__btn {
+      justify-content: center;
+      mat-spinner {
+        margin: 0 auto;
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<div class="items-list-item" *ngIf="item">
+  <mat-card (click)="handleCardClick($event)">
+    <mat-card-content>
+      <div class="row">
+        <div class="col-md-3">
+          <img class="items-list-item__img" [src]="item.image" [alt]="item.label" />
+        </div>
+        <div class="col-md-9">
+          <p>
+            {{item.label}}
+          </p>
+          <p *ngIf="item.color">
+            Color: {{item.color}}
+          </p>
+          <p>
+            Price: {{currencySymbol}}{{item.cost}}
+          </p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

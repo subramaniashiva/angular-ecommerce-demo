@@ -1,0 +1,18 @@
+<div class="voucher-code">
+  <mat-card>
+    <mat-card-content>
+      <div class="row controls-text-container">
+        <div class="col-md-2 text-container">
+          <span><strong>Voucher Code:</strong></span>
+        </div>
+        <div class="col-md-10 controls-container">
+          <input type="text" [(ngModel)]="voucherCode" />
+          <button class="controls-container__btn" mat-raised-button color="primary" [disabled]="showBtnLoading" (click)="handleVoucher()">
+            <span *ngIf="!showBtnLoading">Add Voucher</span>
+            <mat-spinner diameter="25" *ngIf="showBtnLoading"></mat-spinner>
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

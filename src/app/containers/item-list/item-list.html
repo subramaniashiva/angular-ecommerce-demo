@@ -1,0 +1,18 @@
+<div class="container">
+  <h1>Products List</h1>
+  <ng-container *ngIf="isLoading">
+    <app-loading-spinner>
+      Loading products list ... Please wait.
+    </app-loading-spinner>
+  </ng-container>
+  <ng-container *ngIf="isError">
+    <app-network-error-component></app-network-error-component>
+  </ng-container>
+  <div *ngIf="!isLoading" class="container-fluid">
+    <div class="row">
+      <div *ngFor="let item of itemsList" class="col-md-4">
+        <app-items-list-item [item]="item" (onItemClick)="handleItemClick($event)" (onAddToCartClick)="handleAddToCardClick($event)"></app-items-list-item>
+      </div>
+    </div>
+  </div>
+</div>

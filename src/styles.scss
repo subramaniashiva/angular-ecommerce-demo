@@ -1,0 +1,9 @@
+// Imports
+@import "assets/styles/theme";
+@import "assets/styles/bootstrap";
+
+body{
+  margin: 0;
+  background: $body-background;
+  color: $body-color;
+}

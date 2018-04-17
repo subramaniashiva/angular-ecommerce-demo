@@ -1,0 +1,78 @@
+<div class="checkout container">
+  <div class="row heading-container">
+    <div class="col-md-6">
+      <h1>Checkout</h1>
+    </div>
+    <div class="col-md-6 empty-cart-btn-container">
+      <!-- ToDo: Show a modal for confirming before emptying cart -->
+      <button mat-raised-button color="primary" [disabled]="!cartItems.length"  (click)="handleEmptyCart()">Empty Cart</button>
+    </div>
+  </div>
+  <ng-container *ngIf="isError">
+    <app-network-error-component></app-network-error-component>
+  </ng-container>
+
+  <ng-container *ngIf="loading">
+    <app-loading-spinner>
+      Buying the items... Please wait.
+    </app-loading-spinner>
+  </ng-container>
+
+  <ng-container *ngIf="!loading">
+    <ng-container *ngFor="let item of cartItems">
+      <mat-card class="checkout__card">
+        <mat-card-content>
+          <div class="row">
+            <div class="col-md-2">
+              <img [src]="item.image" class="checkout__img" />
+            </div>
+            <div class="col-md-10">
+              <p>{{item.brand}} - {{item.label}}</p>
+              <p><strong>Price per item: </strong>{{currencySymbol}}{{item.cost}}</p>
+              <p>
+                <strong>Change Quantity: </strong>
+                <select [ngModel]="getQuantity(item.productId)" (change)="handleQuantityChange($event, item.productId)">
+                  <option *ngFor="let option of getQuantityList(item.productId)" [value]="option">{{option}}</option>
+                </select>
+              </p>
+              <button (click)="handleRemoveItem(item.productId)" mat-button color="primary">Remove item</button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+
+    <ng-container *ngIf="cartItems.length">
+      <mat-card>
+        <mat-card-content>
+          <div class="row">
+            <div class="col-md-10">
+              <p><strong>Total Price: </strong></p>
+            </div>
+            <div class="col-md-2">
+              <p>{{currencySymbol}}{{totalPrice}}</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <div class="checkout__btn-container">
+        <button mat-raised-button color="primary" (click)="handleBuyNow()">Buy Now</button>
+      </div>
+    </ng-container>
+
+    <ng-container>
+      <app-voucher-code (onVoucherAdded)="handleVoucherAdded($event)"></app-voucher-code>
+    </ng-container>
+
+    <ng-container *ngIf="!cartItems || !cartItems.length">
+      <mat-card>
+        <mat-card-content>
+          <div class="row">
+            <p>Oh Ho! Your cart is empty!</p>
+            <p><a [routerLink]="itemsListPath">Click here</a> to browse through our collection.</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+  </ng-container>
+</div>

@@ -1,0 +1,17 @@
+@import "./src/assets/styles/theme";
+
+#header{
+  height: 54px;
+  padding: 10px;
+  background: $header-background;
+  color: $header-color;
+
+  .logo{
+    height: 30px;
+    float: left;
+  }
+
+  .btn-checkout{
+    float: right;
+  }
+}
